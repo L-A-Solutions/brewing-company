@@ -48,6 +48,7 @@
             color: var(--cream);
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         /* ─── SCROLLBAR ──────────────────────────── */
@@ -75,6 +76,12 @@
             border-color: rgba(212,134,11,0.12);
             padding-top: 0.75rem;
             padding-bottom: 0.75rem;
+        }
+        #navbar.menu-open {
+            background: rgba(18,18,18,0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: background 0.15s ease, border-color 0.15s ease, padding 0.4s ease;
         }
         .nav-inner {
             max-width: 80rem; margin: 0 auto;
@@ -397,7 +404,7 @@
             position: relative;
 
             background-position: center ; /* Centrerad horisontellt, 20% ner vertikalt */
-            background-size: 100% auto; /* Din 70% regel! Justerar bredden till 70% */
+            background-size: 105% auto; /* Din 70% regel! Justerar bredden till 70% */
             
             background-repeat: no-repeat;
                   
@@ -1352,12 +1359,14 @@
         const isOpen = mobileMenu.classList.toggle('open');
         hamburger.classList.toggle('open', isOpen);
         hamburger.setAttribute('aria-expanded', String(isOpen));
+        navbar.classList.toggle('menu-open', isOpen);
     });
 
     const closeMobile = () => {
         mobileMenu.classList.remove('open');
         hamburger.classList.remove('open');
         hamburger.setAttribute('aria-expanded', 'false');
+        navbar.classList.remove('menu-open');
     };
     mobileLinks.forEach(l => l.addEventListener('click', closeMobile));
 
