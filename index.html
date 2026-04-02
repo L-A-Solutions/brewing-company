@@ -41,7 +41,7 @@
             --faint:     #4A4440;
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: clip; }
 
         body {
             background-color: var(--bg);
@@ -629,7 +629,7 @@
 
         /* ─── CONTACT SECTION ────────────────────── */
         #contact {
-            padding: 7rem 0; position: relative;
+            padding: 7rem 0; position: relative; overflow: hidden;
         }
         #contact::before {
             content: '';
