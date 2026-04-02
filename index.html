@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Åstö Brewing Company – Smaken av Åstön</title>
+    <meta name="description" content="Hantverksöl bryggd med passion på Åstön, Timrå. Upplev smaken av Norrlands natur i varje glas.">
+    <link rel="icon" type="image/png" href="favicon.png.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'garamond': ['"EB Garamond"', 'Georgia', 'serif'],
+                        'inter':    ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ─── BASE ───────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #121212;
+            --surface:   #1A1A1A;
+            --card-bg:   #1E1E1E;
+            --amber:     #D4860B;
+            --amber-lt:  #F0A500;
+            --amber-dk:  #A36308;
+            --forest:    #3D6B47;
+            --forest-lt: #4A7C59;
+            --cream:     #E8E0D0;
+            --muted:     #8A7F72;
+            --faint:     #4A4440;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ─── SCROLLBAR ──────────────────────────── */
+        ::-webkit-scrollbar              { width: 6px; }
+        ::-webkit-scrollbar-track        { background: var(--bg); }
+        ::-webkit-scrollbar-thumb        { background: var(--amber); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover  { background: var(--amber-lt); }
+
+        /* ─── TYPOGRAPHY HELPERS ─────────────────── */
+        .font-garamond { font-family: 'EB Garamond', Georgia, serif; }
+        .font-inter    { font-family: 'Inter', sans-serif; }
+
+        /* ─── NAV ────────────────────────────────── */
+        #navbar {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 50;
+            padding: 1.25rem 1.5rem;
+            transition: background 0.4s ease, border-color 0.4s ease, padding 0.4s ease;
+            border-bottom: 1px solid transparent;
+        }
+        #navbar.scrolled {
+            background: rgba(18,18,18,0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-color: rgba(212,134,11,0.12);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        .nav-inner {
+            max-width: 80rem; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-logo-ring {
+            width: 2.25rem; height: 2.25rem;
+            border-radius: 50%;
+            border: 1px solid rgba(212,134,11,0.35);
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.3s;
+        }
+        .nav-logo:hover .nav-logo-ring { border-color: var(--amber); }
+        .nav-logo-text {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.2rem; font-weight: 600;
+            color: var(--cream); letter-spacing: 0.02em;
+        }
+        .nav-links { display: none; align-items: center; gap: 2rem; }
+        @media(min-width:768px){ .nav-links { display: flex; } }
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem; 
+            font-weight: 500;
+            letter-spacing: 0.12em; 
+            text-transform: uppercase;
+            color: #E8E0D0; 
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+        .nav-link:hover { color: var(--amber); }
+
+        /* hamburger */
+        .hamburger { display: flex; flex-direction: column; gap: 5px; padding: 0.4rem; cursor: pointer; border: none; background: none; }
+        .hamburger span { display: block; height: 1.5px; background: var(--cream); border-radius: 2px; transition: all 0.3s; }
+        .hamburger span:nth-child(1) { width: 22px; }
+        .hamburger span:nth-child(2) { width: 22px; }
+        .hamburger span:nth-child(3) { width: 14px; background: var(--amber); align-self: flex-end; }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: translateX(-8px); }
+        .hamburger.open span:nth-child(3) { width: 22px; transform: rotate(-45deg) translate(4px, -4px); }
+        @media(min-width:768px){ .hamburger { display: none; } }
+
+        /* mobile menu */
+        #mobile-menu {
+            overflow: hidden; max-height: 0;
+            transition: max-height 0.35s ease;
+            border-top: 1px solid transparent;
+        }
+        #mobile-menu.open {
+            max-height: 320px;
+            border-color: rgba(212,134,11,0.1);
+        }
+        .mobile-menu-inner {
+            max-width: 80rem; margin: 0 auto;
+            padding: 1rem 1.5rem 1.25rem;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .mobile-nav-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--muted); text-decoration: none;
+            transition: color 0.25s; padding: 0.25rem 0;
+        }
+        .mobile-nav-link:hover { color: var(--amber); }
+
+        /* ─── BUTTONS ────────────────────────────── */
+        .btn-amber {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, var(--amber), var(--amber-lt));
+            color: #111; font-family: 'Inter', sans-serif;
+            font-weight: 600; font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            border-radius: 9999px;
+            padding: 0.8rem 1.8rem;
+            text-decoration: none;
+            border: none; cursor: pointer;
+            position: relative; overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .btn-amber::after {
+            content: '';
+            position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-amber:hover::after { left: 100%; }
+        .btn-amber:hover {
+            box-shadow: 0 8px 32px rgba(212,134,11,0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            display: inline-flex; align-items: center; justify-content: center;
+            border: 1.5px solid var(--amber);
+            color: var(--amber);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600; font-size: 0.8rem; letter-spacing: 0.06em;
+            border-radius: 9999px; padding: 0.8rem 1.8rem;
+            text-decoration: none; cursor: pointer; background: transparent;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+        }
+        .btn-outline:hover {
+            background: var(--amber); color: #111;
+            box-shadow: 0 8px 28px rgba(212,134,11,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ─── DIVIDER ────────────────────────────── */
+        .amber-line {
+            width: 52px; height: 2px;
+            background: linear-gradient(90deg, var(--amber), var(--amber-lt));
+            border-radius: 2px;
+        }
+        .amber-line.center { margin: 0 auto; }
+
+        /* ─── EYEBROW ────────────────────────────── */
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+        }
+        .eyebrow::before, .eyebrow::after {
+            content: '';
+            display: block; width: 28px; height: 1px;
+            background: rgba(212,134,11,0.5);
+        }
+        .eyebrow span {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem; font-weight: 500;
+            letter-spacing: 0.28em; text-transform: uppercase;
+            /* color: var(--amber); */
+            color: #ffffff;
+        }
+
+        /* ─── HERO ───────────────────────────────── */
+        #hero {
+            position: relative;
+            min-height: 100svh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=2560&q=85');
+            background-size: cover;
+            background-position: center 40%;
+            will-change: background-position;
+        }
+        /* iOS fix: no fixed attachment on mobile */
+        @media(min-width:768px){
+            .hero-bg { background-attachment: fixed; }
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(18,18,18,0.55) 0%,
+                rgba(18,18,18,0.25) 35%,
+                rgba(18,18,18,0.65) 75%,
+                rgba(18,18,18,1)    100%
+            );
+        }
+        .hero-glow {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 680px; height: 260px;
+            background: radial-gradient(ellipse, rgba(212,134,11,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative; z-index: 10;
+            text-align: center;
+            padding: 0 1.5rem;
+            max-width: 64rem; width: 100%;
+        }
+        .hero-h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 600; line-height: 0.95;
+            margin-bottom: 1.25rem;
+        }
+        .hero-h1 em { font-style: italic; color: var(--amber); }
+        .hero-sub {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-style: italic; color: #C8B99A;
+            margin-bottom: 0.75rem;
+        }
+        .hero-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem; line-height: 1.75;
+            /*color: var(--muted);*/ max-width: 38rem; margin: 0 auto 2.5rem;
+            color: #ffffff;
+        }
+        .hero-ctas {
+            display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+        }
+        .scroll-indicator span {
+            font-family: 'Inter', sans-serif; font-size: 0.6rem;
+            letter-spacing: 0.25em; text-transform: uppercase; color: var(--faint);
+        }
+        .scroll-mouse {
+            width: 1.25rem; height: 1.9rem;
+            border-radius: 9999px; border: 1px solid rgba(212,134,11,0.35);
+            display: flex; align-items: flex-start; justify-content: center;
+            padding: 0.25rem;
+        }
+        .scroll-dot {
+            width: 3px; height: 6px; background: var(--amber);
+            border-radius: 9999px;
+            animation: scrollBounce 2.2s ease-in-out infinite;
+        }
+        @keyframes scrollBounce {
+            0%,100% { transform: translateY(0); opacity: 1; }
+            60%      { transform: translateY(8px); opacity: 0.4; }
+        }
+
+        /* ─── FADE-IN ANIMATIONS ─────────────────── */
+        @keyframes fadeUp  { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+
+        .anim-fade-up  { opacity:0; animation: fadeUp  0.9s ease forwards; }
+        .anim-fade-in  { opacity:0; animation: fadeIn  1s   ease forwards; }
+        .d1 { animation-delay: 0.15s; }
+        .d2 { animation-delay: 0.35s; }
+        .d3 { animation-delay: 0.55s; }
+        .d4 { animation-delay: 0.75s; }
+        .d5 { animation-delay: 1.00s; }
+        .d6 { animation-delay: 1.30s; }
+
+        /* ─── SCROLL REVEAL ──────────────────────── */
+        .reveal, .reveal-l, .reveal-r {
+            opacity: 0;
+            transition: opacity 0.85s ease, transform 0.85s ease;
+        }
+        .reveal   { transform: translateY(36px); }
+        .reveal-l { transform: translateX(-40px); }
+        .reveal-r { transform: translateX(40px); }
+        .reveal.on, .reveal-l.on, .reveal-r.on {
+            opacity: 1; transform: none;
+        }
+        .td1 { transition-delay: 0.08s; }
+        .td2 { transition-delay: 0.18s; }
+        .td3 { transition-delay: 0.28s; }
+        .td4 { transition-delay: 0.38s; }
+
+        /* ─── SECTION COMMON ─────────────────────── */
+        .section-inner {
+            max-width: 80rem; margin: 0 auto; padding: 0 1.5rem;
+        }
+        @media(min-width:1024px){ .section-inner { padding: 0 3rem; } }
+
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(2.6rem, 5vw, 3.75rem);
+            font-weight: 600; line-height: 1.1;
+            margin: 0.6rem 0 1rem;
+        }
+        .section-title em { font-style: italic; color: var(--amber); }
+        .section-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem; line-height: 1.8; color: var(--muted);
+            max-width: 38rem; margin: 0 auto;
+        }
+
+        /* ─── GLASS CARD ─────────────────────────── */
+        .glass-card {
+            
+            background: rgba(255,255,255,0.035);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212,134,11,0.13);
+            border-radius: 1.25rem;
+            transition: background 0.4s, border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+
+        }
+        .glass-card:hover {
+            background: rgba(255,255,255,0.065);
+            border-color: rgba(212,134,11,0.42);
+            transform: translateY(-7px);
+            box-shadow: 0 24px 64px rgba(212,134,11,0.13), 0 0 0 1px rgba(212,134,11,0.18);
+            
+        }
+       
+        
+
+        /* ─── BEER CARDS ─────────────────────────── */
+        #beers { padding: 7rem 0; position: relative; }
+        #beers::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 50% -5%, rgba(212,134,11,0.07) 0%, transparent 65%);
+            pointer-events: none;
+            
+        }
+
+        .beer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1.5rem;
+        }
+        .card-content{
+            opacity: 0;
+            transition: opacity 0.3s ;
+            z-index: 2;
+            position: relative;
+        }
+
+        .beer-card {
+            padding: 1.75rem 1.5rem;
+            display: flex; flex-direction: column;
+            position: relative;
+
+            background-position: center ; /* Centrerad horisontellt, 20% ner vertikalt */
+            background-size: 100% auto; /* Din 70% regel! Justerar bredden till 70% */
+            
+            background-repeat: no-repeat;
+                  
+
+        }
+        .beer-card:hover .card-content{
+            opacity: 1;
+        }
+        .card-red-ale {
+        background-image: url('images/ugg.png');
+        }
+
+        .card-t-ol {
+        background-image: url('images/t-ol.png');
+        }
+
+        .card-julmust {
+        background-image: url('images/julmust.png');
+        }
+
+        .card-paskmust {
+        background-image: url('images/paskmust.png');
+        
+    }
+        .beer-card-bar {
+            width: 100%; height: 3px; border-radius: 9999px; margin-bottom: 1.5rem;
+        }
+        .beer-card-badges {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .tag-style {
+            font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 9999px;
+            background: rgba(61,107,71,0.18); border: 1px solid rgba(61,107,71,0.4);
+            color: var(--forest-lt);
+        }
+        .tag-abv {
+            font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.05em; padding: 0.3rem 0.75rem; border-radius: 9999px;
+            background: rgba(212,134,11,0.12); border: 1px solid rgba(212,134,11,0.38);
+            color: var(--amber-lt);
+        }
+        .beer-icon-wrap {
+            width: 3.5rem; height: 3.5rem; border-radius: 50%;
+            background: rgba(212,134,11,0.07);
+            border: 1px solid rgba(212,134,11,0.18);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.25rem;
+        }
+        .beer-icon-wrap.green {
+            background: rgba(61,107,71,0.12);
+            border-color: rgba(61,107,71,0.28);
+        }
+        .beer-name {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.55rem; font-weight: 600;
+            text-align: center; margin-bottom: 0.3rem;
+        }
+        .beer-style-label {
+            font-family: 'Inter', sans-serif; font-size: 0.6rem;
+            font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+            color: var(--amber); text-align: center; margin-bottom: 1rem;
+        }
+        .beer-style-label.green { color: var(--forest-lt); }
+        .beer-desc {
+            font-family: 'Inter', sans-serif; font-size: 0.82rem;
+            line-height: 1.7; color: var(--muted); text-align: center;
+            flex-grow: 1;
+        }
+        .beer-intensity {
+            margin-top: 1.25rem; padding-top: 1.1rem;
+            border-top: 1px solid rgba(212,134,11,0.1);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .beer-intensity span {
+            font-family: 'Inter', sans-serif; font-size: 0.65rem;
+            color: var(--faint);
+        }
+        .intensity-dots { display: flex; gap: 4px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; }
+        .dot-on-a  { background: var(--amber); }
+        .dot-off-a { background: rgba(212,134,11,0.2); }
+        .dot-on-g  { background: var(--forest-lt); }
+        .dot-off-g { background: rgba(74,124,89,0.2); }
+
+        /* ─── STORY SECTION ──────────────────────── */
+        #story {
+            padding: 7rem 0; position: relative; overflow: hidden;
+        }
+        #story::before, #story::after {
+            content: '';
+            position: absolute; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,134,11,0.18), transparent);
+        }
+        #story::before { top: 0; }
+        #story::after  { bottom: 0; }
+        #story .glow {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse, rgba(61,107,71,0.055) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .story-grid {
+            display: grid; grid-template-columns: 1fr;
+            gap: 3.5rem; align-items: center;
+        }
+        @media(min-width:1024px){
+            .story-grid { grid-template-columns: 1fr 1fr; gap: 5rem; }
+        }
+
+        .story-img-wrap {
+            position: relative;
+        }
+        .story-img-inner {
+            position: relative; border-radius: 1.25rem; overflow: hidden;
+            aspect-ratio: 4/5;
+        }
+        .story-img-bg {
+            position: absolute; inset: 0;
+            background-image: url('skeppshamn vindskydd.jpg');
+            background-size: cover; background-position: center;
+        }
+        .story-img-fade {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(18,18,18,0.6) 0%, transparent 50%);
+        }
+        .story-img-ring {
+            position: absolute; inset: 0; border-radius: 1.25rem;
+            border: 1px solid rgba(212,134,11,0.2); pointer-events: none;
+        }
+        .story-badge {
+            position: absolute; bottom: 1.25rem; left: 1.25rem; right: 1.25rem;
+            padding: 0.9rem 1.1rem;
+            display: flex; align-items: center; gap: 0.9rem;
+            background: rgba(255,255,255,0.045);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212,134,11,0.2); border-radius: 0.9rem;
+        }
+        .story-badge-icon {
+            width: 2.25rem; height: 2.25rem; border-radius: 50%; flex-shrink: 0;
+            background: rgba(212,134,11,0.15); border: 1px solid rgba(212,134,11,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .story-badge-title {
+            font-family: 'EB Garamond', serif; font-size: 0.95rem; font-weight: 600;
+        }
+        .story-badge-sub {
+            font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem;
+        }
+        .story-deco-box {
+            position: absolute; bottom: -1.25rem; right: -1.25rem;
+            width: 6rem; height: 6rem; border-radius: 1rem;
+            border: 1px solid rgba(212,134,11,0.12); z-index: -1;
+        }
+        .story-deco-circle {
+            position: absolute; top: -1.25rem; left: -1.25rem;
+            width: 4.5rem; height: 4.5rem; border-radius: 50%;
+            border: 1px solid rgba(61,107,71,0.18); z-index: -1;
+        }
+
+        .story-text p {
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            line-height: 1.85; color: var(--muted); margin-bottom: 1.1rem;
+        }
+        .story-stats {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            gap: 1.5rem; margin-top: 2.5rem; padding-top: 2rem;
+            border-top: 1px solid rgba(212,134,11,0.1);
+        }
+        .stat-num {
+            font-family: 'EB Garamond', serif; font-size: 2rem;
+            font-weight: 600; color: var(--amber); line-height: 1;
+        }
+        .stat-label {
+            font-family: 'Inter', sans-serif; font-size: 0.6rem;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--faint); margin-top: 0.3rem;
+        }
+
+        /* ─── PROCESS SECTION ────────────────────── */
+        #process {
+            padding: 5.5rem 0; background: #0D0D0D; position: relative;
+        }
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+            gap: 2.5rem; position: relative;
+        }
+        .process-connector {
+            display: none;
+            position: absolute; top: 2rem; left: 12.5%; right: 12.5%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,134,11,0.25) 20%, rgba(212,134,11,0.45) 50%, rgba(212,134,11,0.25) 80%, transparent);
+        }
+        @media(min-width:768px){ .process-connector { display: block; } }
+
+        .process-step {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .process-icon {
+            width: 4rem; height: 4rem; border-radius: 50%; flex-shrink: 0;
+            border: 1px solid rgba(212,134,11,0.38);
+            background: #0D0D0D;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.1rem; position: relative; z-index: 1;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .process-step:hover .process-icon {
+            border-color: var(--amber);
+            background: rgba(212,134,11,0.07);
+        }
+        .process-step-title {
+            font-family: 'EB Garamond', serif; font-size: 1.2rem; font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .process-step-desc {
+            font-family: 'Inter', sans-serif; font-size: 0.75rem;
+            line-height: 1.65; color: var(--faint);
+        }
+
+        /* ─── CONTACT SECTION ────────────────────── */
+        #contact {
+            padding: 7rem 0; position: relative;
+        }
+        #contact::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,134,11,0.18), transparent);
+        }
+        #contact .glow {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 350px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,134,11,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-grid {
+            display: grid; grid-template-columns: 1fr;
+            gap: 4rem; align-items: start;
+        }
+        @media(min-width:1024px){
+            .contact-grid { grid-template-columns: 1fr 1fr; gap: 5rem; }
+        }
+
+        .contact-info-title {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+            font-weight: 600; line-height: 1.1; margin-bottom: 1.25rem;
+        }
+        .contact-info-title em { font-style: italic; color: var(--amber); }
+        .contact-desc {
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+            line-height: 1.8; color: var(--muted); margin-bottom: 2.5rem;
+        }
+
+        .contact-detail {
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+        }
+        .contact-icon {
+            width: 2.5rem; height: 2.5rem; border-radius: 50%; flex-shrink: 0;
+            border: 1px solid rgba(212,134,11,0.28);
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .contact-detail:hover .contact-icon {
+            border-color: var(--amber); background: rgba(212,134,11,0.07);
+        }
+        .contact-label {
+            font-family: 'Inter', sans-serif; font-size: 0.6rem;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint);
+        }
+        .contact-value {
+            font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #C8B99A;
+            margin-top: 0.2rem;
+        }
+        .social-links { display: flex; gap: 0.75rem; margin-top: 2.25rem; }
+        .social-link {
+            width: 2.5rem; height: 2.5rem; border-radius: 50%;
+            border: 1px solid rgba(212,134,11,0.28);
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .social-link:hover {
+            border-color: var(--amber); background: rgba(212,134,11,0.1);
+        }
+
+        /* form */
+        .form-card {
+            padding: 2.25rem;
+        }
+        .form-card-title {
+            font-family: 'EB Garamond', serif; font-size: 1.65rem; font-weight: 600; margin-bottom: 0.25rem;
+        }
+        .form-card-sub {
+            font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--faint); margin-bottom: 1.75rem;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin-bottom: 1.1rem; }
+        @media(max-width:480px){ .form-row { grid-template-columns: 1fr; } }
+        .form-group { margin-bottom: 1.1rem; }
+        .form-label {
+            display: block;
+            font-family: 'Inter', sans-serif; font-size: 0.62rem;
+            letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+            margin-bottom: 0.5rem;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(212,134,11,0.18);
+            border-radius: 0.75rem; color: var(--cream);
+            font-family: 'Inter', sans-serif; font-size: 0.85rem;
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: rgba(212,134,11,0.55);
+            background: rgba(255,255,255,0.055);
+            box-shadow: 0 0 0 3px rgba(212,134,11,0.1);
+        }
+        .form-input::placeholder, .form-textarea::placeholder { color: var(--faint); }
+        .form-select { appearance: none; cursor: pointer; }
+        .form-select option { background: #1E1E1E; color: var(--cream); }
+        .form-textarea { resize: none; line-height: 1.6; }
+        .form-privacy {
+            font-family: 'Inter', sans-serif; font-size: 0.7rem;
+            color: var(--faint); text-align: center; margin-top: 1rem;
+        }
+
+        /* ─── FOOTER ─────────────────────────────── */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(212,134,11,0.1);
+        }
+        .footer-inner {
+            max-width: 80rem; margin: 0 auto; padding: 0 1.5rem;
+        }
+        @media(min-width:1024px){ .footer-inner { padding: 0 3rem; } }
+        .footer-top {
+            display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+            padding-bottom: 2rem;
+        }
+        @media(min-width:768px){
+            .footer-top { flex-direction: row; justify-content: space-between; }
+        }
+        .footer-nav { display: flex; gap: 1.75rem; }
+        .footer-link {
+            font-family: 'Inter', sans-serif; font-size: 0.8rem;
+            color: var(--muted); text-decoration: none;
+            transition: color 0.25s;
+        }
+        .footer-link:hover { color: var(--amber); }
+        .footer-copy {
+            font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--faint);
+        }
+        .footer-bottom {
+            text-align: center; padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .footer-tagline {
+            font-family: 'EB Garamond', serif; font-style: italic;
+            font-size: 0.9rem; color: rgba(74,68,64,0.7);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════ -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#hero" class="nav-logo">
+            <div class="nav-logo-ring">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 7v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7H7z"/>
+                    <path d="M7 7H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/>
+                    <path d="M19 9h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2"/>
+                </svg>
+            </div>
+            <span class="nav-logo-text">Åstö Bryggeri</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="#beers"   class="nav-link">Ölsorter</a>
+            <a href="#story"   class="nav-link">Historien</a>
+            <a href="#process" class="nav-link">Processen</a>
+            <a href="#contact" class="nav-link">Kontakt</a>
+            <a href="#contact" class="btn-amber" style="padding:0.55rem 1.3rem;font-size:0.72rem;">Boka Provning</a>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-label="Öppna meny" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div id="mobile-menu" role="menu">
+        <div class="mobile-menu-inner">
+            <a href="#beers"   class="mobile-nav-link">Ölsorter</a>
+            <a href="#story"   class="mobile-nav-link">Historien</a>
+            <a href="#process" class="mobile-nav-link">Processen</a>
+            <a href="#contact" class="mobile-nav-link">Kontakt</a>
+            <a href="#contact" class="btn-amber" style="text-align:center;margin-top:0.25rem;">Boka Provning</a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section id="hero">
+    <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="hero-content">
+        <div class="eyebrow anim-fade-in d1" style="justify-content:center;margin-bottom:2rem;">
+            <span>Åstön · Timrå · Sverige</span>
+        </div>
+
+        <h1 class="hero-h1 anim-fade-up d2">
+            Åstö Brewing<br><em>Company</em>
+        </h1>
+
+        <p class="hero-sub anim-fade-up d3">Smaken av Åstön</p>
+
+        <p class="hero-desc anim-fade-up d4">
+            Hantverksöl bryggd med passion och djup respekt för naturen.
+            Varje sats bär med sig doften av havsluft, tallskog och de råa
+            klipporna runt Åstön i Timrå.
+        </p>
+
+        <div class="hero-ctas anim-fade-up d5">
+            <a href="#beers" class="btn-amber">Utforska Ölsorterna</a>
+            <a href="#story" class="btn-outline">Vår Historia</a>
+        </div>
+    </div>
+
+    <div class="scroll-indicator anim-fade-in d6" aria-hidden="true">
+        <span>Scrolla</span>
+        <div class="scroll-mouse">
+            <div class="scroll-dot"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     BEER SECTION
+══════════════════════════════════════════ -->
+<section id="beers">
+    <div class="section-inner">
+
+        <div class="section-header reveal">
+            <div class="eyebrow" style="justify-content:center;margin-bottom:0.75rem;">
+                <span>Hantverk i varje droppe</span>
+            </div>
+            <h2 class="section-title">Våra <em>Ölsorter</em></h2>
+            <div class="amber-line center" style="margin-bottom:1.25rem;"></div>
+            <p class="section-desc">
+                Varje recept är unikt framtaget och inspirerat av historia och kultur.
+                Smaka och upplev en dopaminhöjande känsla på flaska.
+            </p>
+        </div>
+
+        <div class="beer-grid">
+
+            <!-- Card 1: IPA -->
+            <div class="glass-card beer-card reveal td1 card-red-ale">
+                <div class = "card-content">
+                
+                <div class="beer-card-bar" style="background:linear-gradient(90deg,#C8780A,#F0A500);"></div>
+                
+                <div class="beer-card-badges">
+                    <span class="tag-style">IPA</span>
+                    <span class="tag-abv">6,0% ABV</span>
+                </div>
+                <div class="beer-icon-wrap">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                    </svg>
+                </div>
+                
+                <h3 class="beer-name">American Red Ale</h3>
+                <p class="beer-style-label">Lager</p>
+                <p class="beer-desc">Precis som indianerna gjorde det, utan konstigheter. 
+                    <br> Ugg Ugg.</p>
+                <div class="beer-intensity">
+                    <span>Beska</span>
+                    <div class="intensity-dots">
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-off-a"></div>
+                        <div class="dot dot-off-a"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Lager -->
+            <div class="glass-card beer-card reveal td2 card-t-ol">
+                <div class = "card-content">
+
+                <div class="beer-card-bar" style="background:linear-gradient(90deg,#C8A060,#EED890);"></div>
+                <div class="beer-card-badges">
+                    <span class="tag-style">Ale</span>
+                    <span class="tag-abv">4,5% ABV</span>
+                </div>
+                <div class="beer-icon-wrap">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 2H7a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                        <path d="M7 7v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7H7z"/>
+                        <path d="M19 9h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2"/>
+                    </svg>
+                </div>
+                <h3 class="beer-name">T-Öl</h3>
+                <p class="beer-style-label">Pale Ale</p>
+                <p class="beer-desc">Med inspiration från OKQ8 passar denna öl perfekt i samband med ett vevlagerbyte, eller varför inte till nobelmiddagen..</p>
+                <div class="beer-intensity">
+                    <span>Humle</span>
+                    <div class="intensity-dots">
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-off-a"></div>
+                        <div class="dot dot-off-a"></div>
+                        <div class="dot dot-off-a"></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Stout -->
+            <div class="glass-card beer-card reveal td3 card-julmust">
+                <div class = "card-content">
+
+                <div class="beer-card-bar" style="background:linear-gradient(90deg,#2D5A27,#4A7C59);"></div>
+                <div class="beer-card-badges">
+                    <span class="tag-style">Julmust</span>
+                    <span class="tag-abv">?.?% ABV </span>
+                </div>
+                <div class="beer-icon-wrap green">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4A7C59" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>
+                    </svg>
+                </div>
+                <h3 class="beer-name">Mirakel Julmust</h3>
+                <p class="beer-style-label green">Imperial Stout</p>
+                <p class="beer-desc">And god said, 'Let there be light'. Med vigvattnet från Jesus Kristus är det en säkerhet att denna dryck tar dig till nya platser.</p>
+                <div class="beer-intensity" style="border-color:rgba(61,107,71,0.18);">
+                    <span>Rostat</span>
+                    <div class="intensity-dots">
+                        <div class="dot dot-on-g"></div>
+                        <div class="dot dot-on-g"></div>
+                        <div class="dot dot-on-g"></div>
+                        <div class="dot dot-on-g"></div>
+                        <div class="dot dot-off-g"></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Saison -->
+            <div class="glass-card beer-card reveal td4 card-paskmust">
+                <div class="card-content">
+                <div class="beer-card-bar" style="background:linear-gradient(90deg,#D4860B,#8BA05B);"></div>
+                <div class="beer-card-badges">
+                    <span class="tag-style">Påskmust</span>
+                    <span class="tag-abv">5,0% ABV</span>
+                </div>
+                <div class="beer-icon-wrap">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                    </svg>
+                </div>
+                <h3 class="beer-name">Passions Påskmust</h3>
+                <p class="beer-style-label">Cider</p>
+                <p class="beer-desc">För krigaren. Denna dryck är ett utmärkt val vid exempelvis en korsfästning.</p>
+                <div class="beer-intensity">
+                    <span>Fruktighet</span>
+                    <div class="intensity-dots">
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-on-a"></div>
+                        <div class="dot dot-off-a"></div>
+                        <div class="dot dot-off-a"></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     STORY SECTION
+══════════════════════════════════════════ -->
+<section id="story">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="section-inner">
+        <div class="story-grid">
+
+            <!-- Image -->
+            <div class="story-img-wrap reveal-l">
+                <div class="story-img-inner">
+                    <div class="story-img-bg" aria-label="Skog och natur på Åstön"></div>
+                    <div class="story-img-fade" aria-hidden="true"></div>
+                    <div class="story-img-ring" aria-hidden="true"></div>
+
+                    <div class="story-badge">
+                        <div class="story-badge-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="story-badge-title">Åstön, Timrå</div>
+                            <div class="story-badge-sub">Vår hemö sedan generationer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-deco-box" aria-hidden="true"></div>
+                <div class="story-deco-circle" aria-hidden="true"></div>
+            </div>
+
+            <!-- Text -->
+            <div class="story-text reveal-r">
+                <div class="eyebrow" style="margin-bottom:1.5rem;">
+                    <span>Rötterna i naturen</span>
+                </div>
+
+                <h2 class="section-title" style="text-align:left;margin-bottom:1.25rem;">
+                    Historien om <em>Åstön</em>
+                </h2>
+                <div class="amber-line" style="margin-bottom:2rem;"></div>
+
+                <p>
+                    Åstön är mer än bara en ö – det är en känsla. Klipporna som reser sig ur Bottenhavet med sina råa,
+                    eroderade konturer, tallskogen som doftar av kåda efter ett sommarregn, och det kalla, klara vattnet
+                    som omger ön på alla sidor. Det är här vår historia börjar.
+                </p>
+                <p>
+                    Vi startade Åstö Brewing Company med en enkel men stark önskan: att brygga öl som verkligen smakade av
+                    platsen vi älskar. Varje ingrediens väljs med noggrann omsorg – vatten från lokala källor,
+                    humle odlat i Medelpad, och jäststammar som trivs i Norrlands svalare klimat.
+                </p>
+                <p>
+                    Bryggprocessen är en levande dialog med naturen och årstiderna. Vi anpassar våra recept
+                    precis som generationerna före oss anpassade sig till markens och havetsvijkor. Resultatet är
+                    öl med äkta karaktär – ärligt, platsspecifikt och alltid bryggd med hela hjärtat.
+                </p>
+
+                <div class="story-stats">
+                    <div>
+                        <div class="stat-num">2024</div>
+                        <div class="stat-label">Grundat</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">4+</div>
+                        <div class="stat-label">Recept</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">100%</div>
+                        <div class="stat-label">Hantverk</div>
+                    </div>
+                </div>
+
+                <a href="#contact" class="btn-amber" style="margin-top:2.25rem;gap:0.6rem;">
+                    Boka en Provning
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     PROCESS SECTION
+══════════════════════════════════════════ -->
+<section id="process">
+    <div class="section-inner">
+
+        <div class="section-header reveal" style="margin-bottom:3.5rem;">
+            <div class="eyebrow" style="justify-content:center;margin-bottom:0.75rem;">
+                <span>Från nat till glas</span>
+            </div>
+            <h2 class="section-title">Brygg&shy;<em>processen</em></h2>
+        </div>
+
+        <div class="process-grid">
+            <div class="process-connector" aria-hidden="true"></div>
+
+            <div class="process-step reveal td1">
+                <div class="process-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22V8M5 12H2a10 10 0 0 0 20 0h-3M12 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/>
+                    </svg>
+                </div>
+                <h4 class="process-step-title">Mältat Korn</h4>
+                <p class="process-step-desc">Lokalt utvalt korn mältas och rostas för djup och komplex smakkaraktär.</p>
+            </div>
+
+            <div class="process-step reveal td2">
+                <div class="process-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12h20M12 2v20M17 7l-5 5-5-5M7 17l5-5 5 5"/>
+                    </svg>
+                </div>
+                <h4 class="process-step-title">Mäskning</h4>
+                <p class="process-step-desc">Stärkelse omvandlas till socker i varmt vatten vid exakt rätt temperatur.</p>
+            </div>
+
+            <div class="process-step reveal td3">
+                <div class="process-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                    </svg>
+                </div>
+                <h4 class="process-step-title">Kokning & Humle</h4>
+                <p class="process-step-desc">Vörten kokas och humle tillsätts i noggrant tajmade intervaller för bästa arom.</p>
+            </div>
+
+            <div class="process-step reveal td4">
+                <div class="process-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 2H7a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                        <path d="M7 7v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7H7z"/>
+                        <path d="M19 9h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2"/>
+                    </svg>
+                </div>
+                <h4 class="process-step-title">Jäsning & Lagring</h4>
+                <p class="process-step-desc">Jäst arbetar i svalare Norrlandsklimat och ger ölet sin unika, rena karaktär.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     CONTACT SECTION
+══════════════════════════════════════════ -->
+<section id="contact">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="section-inner">
+        <div class="contact-grid">
+
+            <!-- Info -->
+            <div class="reveal-l">
+                <div class="eyebrow" style="margin-bottom:1.5rem;">
+                    <span>Vi hör gärna från dig</span>
+                </div>
+
+                <h2 class="contact-info-title">
+                    Kontakt &<br><em>Bokning</em>
+                </h2>
+                <div class="amber-line" style="margin-bottom:1.75rem;"></div>
+
+                <p class="contact-desc">
+                    Nyfiken på att besöka bryggeriet, boka en exklusiv ölprovning, eller
+                    bara ställa en fråga? Vi välkomnar alla som delar vår kärlek till
+                    hantverksöl och naturen på Åstön.
+                </p>
+
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="contact-label">Adress</div>
+                        <div class="contact-value">Åstön, 861 xx Timrå, Sverige</div>
+                    </div>
+                </div>
+
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.86-1.84a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="contact-label">Telefon</div>
+                        <div class="contact-value">+46 (0) 60 000 000</div>
+                    </div>
+                </div>
+
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="contact-label">E-post</div>
+                        <div class="contact-value">hej@astobryggeri.se</div>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Untappd">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 2H7a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/>
+                            <path d="M7 7v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7H7z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <div class="reveal-r">
+                <form
+                    name="kontakt"
+                    method="POST"
+                    data-netlify="true"
+                    netlify-honeypot="bot-field"
+                    class="glass-card form-card"
+                >
+                    <!-- Netlify required hidden inputs -->
+                    <input type="hidden" name="form-name" value="kontakt">
+                    <!-- Honeypot field (hidden from humans) -->
+                    <p style="display:none;">
+                        <label>Lämna detta tomt: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+                    </p>
+
+                    <h3 class="form-card-title">Skicka ett meddelande</h3>
+                    <p class="form-card-sub">Vi svarar vanligtvis inom 24 timmar.</p>
+
+                    <div class="form-row">
+                        <div>
+                            <label class="form-label" for="fornamn">Förnamn *</label>
+                            <input class="form-input" type="text" id="fornamn" name="fornamn" required placeholder="Anna" autocomplete="given-name">
+                        </div>
+                        <div>
+                            <label class="form-label" for="efternamn">Efternamn *</label>
+                            <input class="form-input" type="text" id="efternamn" name="efternamn" required placeholder="Lindström" autocomplete="family-name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">E-postadress *</label>
+                        <input class="form-input" type="email" id="email" name="email" required placeholder="anna@example.com" autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="arende">Ärendetyp</label>
+                        <select class="form-select" id="arende" name="arende">
+                            <option value="">Välj ärende…</option>
+                            <option value="provning">Boka ölprovning</option>
+                            <option value="bestallning">Beställning / Köp</option>
+                            <option value="besok">Besök bryggeriet</option>
+                            <option value="event">Privat event</option>
+                            <option value="annat">Annat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="meddelande">Meddelande *</label>
+                        <textarea class="form-textarea" id="meddelande" name="meddelande" required rows="4" placeholder="Berätta vad du funderar på…"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-amber" style="width:100%;border-radius:0.75rem;padding:1rem;" id="submitBtn">
+                        Skicka Meddelande
+                    </button>
+
+                    <p class="form-privacy">
+                        Dina uppgifter behandlas konfidentiellt och delas aldrig med tredje part.
+                    </p>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <a href="#hero" class="nav-logo">
+                <div class="nav-logo-ring" style="width:1.9rem;height:1.9rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4860B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 7v13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7H7z"/>
+                        <path d="M7 7H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/>
+                    </svg>
+                </div>
+                <span class="nav-logo-text" style="font-size:1rem;">Åstö Bryggeri</span>
+            </a>
+
+            <nav class="footer-nav" aria-label="Sidfotslänkar">
+                <a href="#beers"   class="footer-link">Ölsorter</a>
+                <a href="#story"   class="footer-link">Historien</a>
+                <a href="#process" class="footer-link">Processen</a>
+                <a href="#contact" class="footer-link">Kontakt</a>
+            </nav>
+
+            <p class="footer-copy">© 2025 Åstö Bryggeri · Åstön, Timrå</p>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-tagline">"Bryggd med kärlek till platsen. Drucken med respekt för hantverket."</p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+    // ── NAV SCROLL ───────────────────────────
+    const navbar = document.getElementById('navbar');
+    const onScroll = () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 70);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ── HAMBURGER MENU ───────────────────────
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobile-menu');
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+
+    hamburger.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('open', isOpen);
+        hamburger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    const closeMobile = () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+    };
+    mobileLinks.forEach(l => l.addEventListener('click', closeMobile));
+
+    // ── SMOOTH SCROLL ────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const target = document.querySelector(a.getAttribute('href'));
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // ── SCROLL REVEAL ────────────────────────
+    const revealObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('on');
+                revealObs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => revealObs.observe(el));
+
+    // ── HERO PARALLAX ────────────────────────
+    const heroBg = document.getElementById('heroBg');
+    if (window.innerWidth >= 768 && heroBg) {
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            if (y < window.innerHeight * 1.2) {
+                heroBg.style.transform = `translateY(${y * 0.28}px)`;
+            }
+        }, { passive: true });
+    }
+
+    // ── FORM SUBMIT STATE ────────────────────
+    const form      = document.querySelector('form[data-netlify]');
+    const submitBtn = document.getElementById('submitBtn');
+    if (form && submitBtn) {
+        form.addEventListener('submit', () => {
+            submitBtn.textContent = 'Skickar…';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.75';
+        });
+    }
+</script>
+
+</body>
+</html>
